@@ -303,7 +303,7 @@ BOOL CMainFrame::CreateOutlookBar(CMFCOutlookBar& bar, UINT uiID, CMFCShellTreeC
 
 	CRect rectDummy(0, 0, 0, 0);
 	const DWORD dwTreeStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS;
-
+/*
 	tree.Create(dwTreeStyle, rectDummy, &bar, 1200);
 	bNameValid = strTemp.LoadString(IDS_FOLDERS);
 	ASSERT(bNameValid);
@@ -313,7 +313,7 @@ BOOL CMainFrame::CreateOutlookBar(CMFCOutlookBar& bar, UINT uiID, CMFCShellTreeC
 	bNameValid = strTemp.LoadString(IDS_CALENDAR);
 	ASSERT(bNameValid);
 	pOutlookBar->AddControl(&calendar, strTemp, 3, TRUE, dwStyle);
-
+*/
 	listValue.Create(rectDummy, &bar, IDS_VALUE_LIST);
 	bNameValid = strTemp.LoadString(IDS_VALUE_LIST);
 	ASSERT(bNameValid);
