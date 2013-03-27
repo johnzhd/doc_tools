@@ -42,6 +42,12 @@ public:
 
 	void PosChange(DE_Pos dpSrc, IN OUT DE_Pos& dpDst);// should set dpDst.nType
 
+	BOOL SearchBuffer(const char * pMark, const DWORD nSize, DWORD nStart, DWORD& nF, BOOL bSel = TRUE);
+
+	void SetEditCulSel(const DE_Pos& dp);
+
+
+
 // ²Ù×÷
 public:
 	void SetEditText( const CString& cstrText );

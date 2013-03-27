@@ -262,3 +262,92 @@ void Cdoc_toolsView::PosChange( DE_Pos dpSrc, IN OUT DE_Pos& dpDst )
 	}
 
 }
+
+BOOL Cdoc_toolsView::SearchBuffer( const char * pMark, const DWORD nSize, DWORD nStart, DWORD& nF, BOOL bSel /*= TRUE*/ )
+{
+	char * pSrc =  m_bufferOriginal.GetBuffer();
+	DWORD nTotal = m_bufferOriginal.GetSize();
+	if (pMark == NULL
+		|| nSize == 0
+		|| pSrc == NULL
+		|| nTotal == 0
+		|| nTotal < nSize)
+	{
+		return FALSE;
+	}
+
+	if (nStart + nSize > nTotal)
+	{
+		nStart = 0;
+	}
+
+	for (DWORD pos = 0,check = 0,next_pos = 0; pos < nTotal; )
+	{
+		// no enough bytes left...
+		if (pos + nSize > nTotal)
+		{
+			break;
+		}
+
+		//march main loop
+		for (check = 0, next_pos = 0; check < nSize; ++check)
+		{
+			//march each byte
+			if (pSrc[pos + check] != pMark[check])
+			{
+				break;
+			}
+
+			//prepare for next loop, try to find the first byte marched
+			if (next_pos == 0 && check != 0 && pMark[0] == pSrc[pos + check])
+			{
+				next_pos = pos + check;
+			}
+		}
+
+		//march whole size! should be marched!
+		if (check == nSize)
+		{
+			// Found!
+			nF = pos;
+			if (bSel == TRUE)
+			{
+				DE_Pos dp;
+				dp.nType = DE_Pos::POS_BUFF;
+				dp.nF = nF;
+				dp.nB = nF + nSize;
+				SetEditCulSel(dp);
+			}
+			return TRUE;
+		}
+
+		//prepare for next loop, try to find the first byte marched
+		// use the prepared pos
+		if (next_pos != 0)
+		{
+			pos = next_pos;
+		}
+		else
+		{
+			//find next pos, or push the pos over
+			for ( ++pos; pos < nTotal; ++pos)
+			{
+				if (pSrc[pos] == pMark[0])
+				{
+					break;
+				}
+			}
+		}
+
+
+	}
+	return FALSE;
+}
+
+void Cdoc_toolsView::SetEditCulSel( const DE_Pos& dp )
+{
+	DE_Pos dpText;
+	dpText.nType = DE_Pos::POS_HEX;
+	PosChange(dp,dpText);
+	m_edit.SetSel((int)dp.nF, (int)dp.nB, TRUE);
+}

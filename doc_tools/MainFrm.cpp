@@ -91,7 +91,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	EnableDocking(CBRS_ALIGN_TOP | CBRS_ALIGN_BOTTOM | CBRS_ALIGN_RIGHT);
 
 	// 创建并设置“Outlook”导航栏:
-	if (!CreateOutlookBar(m_wndNavigationBar, ID_VIEW_NAVIGATION, m_wndTree, m_wndCalendar, m_wndList, 250))
+	if (!CreateOutlookBar(m_wndNavigationBar, ID_VIEW_NAVIGATION, m_dlgSearch, m_wndCalendar, m_wndList, 250))
 	{
 		TRACE0("未能创建导航窗格\n");
 		return -1;      // 未能创建
@@ -268,7 +268,7 @@ void CMainFrame::InitializeRibbon()
 	m_wndRibbonBar.AddToTabs(new CMFCRibbonButton(ID_APP_ABOUT, _T("\na"), m_PanelImages.ExtractIcon (0)));
 }
 
-BOOL CMainFrame::CreateOutlookBar(CMFCOutlookBar& bar, UINT uiID, CMFCShellTreeCtrl& tree, CCalendarBar& calendar
+BOOL CMainFrame::CreateOutlookBar(CMFCOutlookBar& bar, UINT uiID, MyDlg_Search& search, CCalendarBar& calendar
 								  , MyListCtrl& listValue, int nInitialWidth)
 {
 	CWindowDC dc(NULL);
@@ -303,12 +303,12 @@ BOOL CMainFrame::CreateOutlookBar(CMFCOutlookBar& bar, UINT uiID, CMFCShellTreeC
 
 	CRect rectDummy(0, 0, 0, 0);
 	const DWORD dwTreeStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS;
-/*
-	tree.Create(dwTreeStyle, rectDummy, &bar, 1200);
-	bNameValid = strTemp.LoadString(IDS_FOLDERS);
-	ASSERT(bNameValid);
-	pOutlookBar->AddControl(&tree, strTemp, 2, TRUE, dwStyle);
 
+	search.Create(IDD_DIALOG1,this);
+	bNameValid = strTemp.LoadString(IDS_SEARCH);
+	ASSERT(bNameValid);
+	pOutlookBar->AddControl(&search, strTemp, 0, TRUE, dwStyle);
+/*
 	calendar.Create(rectDummy, &bar, 1201);
 	bNameValid = strTemp.LoadString(IDS_CALENDAR);
 	ASSERT(bNameValid);
@@ -325,6 +325,8 @@ BOOL CMainFrame::CreateOutlookBar(CMFCOutlookBar& bar, UINT uiID, CMFCShellTreeC
 
 	pOutlookBar->SetImageList(theApp.m_bHiColorIcons ? IDB_PAGES_HC : IDB_PAGES, 24);
 	pOutlookBar->SetToolbarImageList(theApp.m_bHiColorIcons ? IDB_PAGES_SMALL_HC : IDB_PAGES_SMALL, 16);
+	//pOutlookBar->SetImageList(IDB_PNG2, 32);
+	//pOutlookBar->SetToolbarImageList(IDB_PNG1, 16);
 	pOutlookBar->RecalcLayout();
 
 	BOOL bAnimation = theApp.GetInt(_T("OutlookAnimation"), TRUE);
@@ -506,10 +508,9 @@ void CMainFrame::OnFileOpen()
 
 	
 
-	Cdoc_toolsView* p = (Cdoc_toolsView*)GetActiveView();
-	if (p != NULL && IsWindow(p->GetSafeHwnd()))
+	if (MAIN_VIEW != NULL && IsWindow( MAIN_VIEW->GetSafeHwnd() ) )
 	{
-		p->OpenNewFileByName(m_cstrOpenFileName);
+		MAIN_VIEW->OpenNewFileByName(m_cstrOpenFileName);
 	}
 	SetCaptionBarText(m_cstrOpenFileName);
 	

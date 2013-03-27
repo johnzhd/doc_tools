@@ -370,6 +370,14 @@
 			Name="pane"
 			>
 			<File
+				RelativePath=".\MyDlg_Search.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MyDlg_Search.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MyListCtrl.cpp"
 				>
 			</File>

@@ -17,6 +17,7 @@
 #include "Resource.h"
 
 #include "MyListCtrl.h"
+#include "MyDlg_Search.h"
 
 class COutlookBar : public CMFCOutlookBar
 {
@@ -60,6 +61,7 @@ protected:  // 控件条嵌入成员
 	CMFCCaptionBar    m_wndCaptionBar;
 
 	MyListCtrl			m_wndList;
+	MyDlg_Search		m_dlgSearch;
 	CMFCToolBarImages m_ExtendImages;
 
 
@@ -77,7 +79,7 @@ protected:
 
 	void InitializeRibbon();
 	BOOL CreateOutlookBar(CMFCOutlookBar& bar, UINT uiID
-		, CMFCShellTreeCtrl& tree
+		, MyDlg_Search& search
 		, CCalendarBar& calendar
 		, MyListCtrl& listValue
 		, int nInitialWidth);

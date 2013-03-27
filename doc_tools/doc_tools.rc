@@ -251,6 +251,18 @@ BEGIN
     DEFPUSHBUTTON   "确定",IDOK,113,41,50,14,WS_GROUP
 END
 
+IDD_DIALOG1 DIALOGEX 0, 0, 316, 183
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "HEX",IDC_BUTTON1,0,9,25,14
+    PUSHBUTTON      "GBK",IDC_BUTTON2,0,32,25,14
+    PUSHBUTTON      "INT",IDC_BUTTON3,0,55,25,14
+    EDITTEXT        IDC_EDIT1,27,9,61,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,27,32,61,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT3,27,55,61,14,ES_AUTOHSCROLL | ES_NUMBER
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -326,6 +338,7 @@ IDB_PNG2                PNG                     "D:\\doc_tools\\resource\\32x32-
 STRINGTABLE 
 BEGIN
     IDP_OLE_INIT_FAILED     "OLE 初始化失败。请确保 OLE 库是正确的版本。"
+    IDS_SEARCH              "查找"
 END
 
 STRINGTABLE 
