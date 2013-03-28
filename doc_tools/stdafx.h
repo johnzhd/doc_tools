@@ -51,7 +51,7 @@
 
 #define MAINFRAME	((CMainFrame *)(AfxGetApp()->m_pMainWnd))
 
-#define MAIN_VIEW	((Cdoc_toolsView *)GetActiveView())
+#define MAIN_VIEW	((Cdoc_toolsView *)MAINFRAME->GetActiveView())
 
 
 

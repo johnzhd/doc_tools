@@ -41,8 +41,9 @@ public:
 
 
 	void PosChange(DE_Pos dpSrc, IN OUT DE_Pos& dpDst);// should set dpDst.nType
+	void LengthChange(int& l, DE_Pos::DE_POS_TYPE typeIn, DE_Pos::DE_POS_TYPE typeOut = DE_Pos::POS_BUFF);
 
-	BOOL SearchBuffer(const char * pMark, const DWORD nSize, DWORD nStart, DWORD& nF, BOOL bSel = TRUE);
+	BOOL SearchBuffer(const char * pMark, const DWORD nSize, int nStart, int& nF, BOOL bSel = TRUE);
 
 	void SetEditCulSel(const DE_Pos& dp);
 
@@ -52,9 +53,11 @@ public:
 public:
 	void SetEditText( const CString& cstrText );
 
+	void GetCulSel(int* nF, int* nB);
+
 public:
 	BOOL Data2HexString(const DE_Buffer& buf, CString& cstrOut);
-	BOOL HexString2Data(const CString& cstrOut, DE_Buffer& buf);
+	BOOL HexString2Data(const CString& cstrIn, DE_Buffer& buf, TCHAR pSpace = _T(' '));
 
 
 protected:
@@ -64,13 +67,36 @@ protected:
 		c &= 0x0F;
 		if (0 <= c && c < 10)
 		{
-			c = '0' + c;
+			c = _T('0') + c;
 		}
 		else
 		{
-			c = 'A' + (c - 10);
+			c = _T('A') + (c - 10);
 		}
 	}
+
+	void CharClearShow( TCHAR&c)
+	{
+		if (_T('0')<=c && c <= _T('9'))
+		{
+			c -= _T('0');
+		}
+		else if (_T('A') <= c && c <= _T('Z'))
+		{
+			c = c - _T('A') + 10;
+		}
+		else if (_T('a') <= c && c <= _T('z'))
+		{
+			c = c - _T('a') + 10;
+		}
+		else
+		{
+			ASSERT(FALSE);
+			c = 0;
+		}
+	}
+	void HexToChar(TCHAR cHigh, TCHAR cLow, char& cOut);
+
 
 // ÖØÐ´
 public:

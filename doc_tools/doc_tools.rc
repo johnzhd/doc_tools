@@ -96,6 +96,8 @@ IDB_PAGES_HC            BITMAP                  "res\\pages_hc.bmp"
 IDB_PAGES_SMALL         BITMAP                  "res\\pages_small.bmp"
 IDB_PAGES_SMALL_HC      BITMAP                  "res\\pages_small_hc.bmp"
 IDB_INFO                BITMAP                  "res\\info.bmp"
+IDB_BITMAP1             BITMAP                  "D:\\doc_tools\\resource\\16x16-RibbonBar.bmp"
+IDB_BITMAP2             BITMAP                  "D:\\doc_tools\\resource\\32x32-RibbonBar.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //

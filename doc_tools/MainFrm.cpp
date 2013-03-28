@@ -41,6 +41,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CMainFrame::OnFilePrintPreview)
 	ON_UPDATE_COMMAND_UI(ID_FILE_PRINT_PREVIEW, &CMainFrame::OnUpdateFilePrintPreview)
 	ON_COMMAND(ID_FILE_OPEN, &CMainFrame::OnFileOpen)
+
+	ON_COMMAND(ID_TOOLS_OPTIONS,&CMainFrame::OnID_TOOLS_OPTIONS)
 END_MESSAGE_MAP()
 
 // CMainFrame ¹¹Ôì/Îö¹¹
@@ -307,7 +309,7 @@ BOOL CMainFrame::CreateOutlookBar(CMFCOutlookBar& bar, UINT uiID, MyDlg_Search& 
 	search.Create(IDD_DIALOG1,this);
 	bNameValid = strTemp.LoadString(IDS_SEARCH);
 	ASSERT(bNameValid);
-	pOutlookBar->AddControl(&search, strTemp, 0, TRUE, dwStyle);
+	pOutlookBar->AddControl(&search, strTemp, 46, TRUE, dwStyle);
 /*
 	calendar.Create(rectDummy, &bar, 1201);
 	bNameValid = strTemp.LoadString(IDS_CALENDAR);
@@ -323,10 +325,10 @@ BOOL CMainFrame::CreateOutlookBar(CMFCOutlookBar& bar, UINT uiID, MyDlg_Search& 
 
 	bar.SetPaneStyle(bar.GetPaneStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC);
 
-	pOutlookBar->SetImageList(theApp.m_bHiColorIcons ? IDB_PAGES_HC : IDB_PAGES, 24);
-	pOutlookBar->SetToolbarImageList(theApp.m_bHiColorIcons ? IDB_PAGES_SMALL_HC : IDB_PAGES_SMALL, 16);
-	//pOutlookBar->SetImageList(IDB_PNG2, 32);
-	//pOutlookBar->SetToolbarImageList(IDB_PNG1, 16);
+	//pOutlookBar->SetImageList(theApp.m_bHiColorIcons ? IDB_PAGES_HC : IDB_PAGES, 24);
+	//pOutlookBar->SetToolbarImageList(theApp.m_bHiColorIcons ? IDB_PAGES_SMALL_HC : IDB_PAGES_SMALL, 16);
+	pOutlookBar->SetImageList(IDB_BITMAP2, 32);
+	pOutlookBar->SetToolbarImageList(IDB_BITMAP1, 16);
 	pOutlookBar->RecalcLayout();
 
 	BOOL bAnimation = theApp.GetInt(_T("OutlookAnimation"), TRUE);
@@ -520,4 +522,8 @@ void CMainFrame::OnFileOpen()
 void CMainFrame::SetCaptionBarText( const CString& cstrText )
 {
 	m_wndCaptionBar.SetText(cstrText, CMFCCaptionBar::ALIGN_LEFT);
+}
+
+void CMainFrame::OnID_TOOLS_OPTIONS()
+{
 }

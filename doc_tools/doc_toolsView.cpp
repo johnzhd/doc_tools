@@ -207,6 +207,12 @@ void Cdoc_toolsView::CharToHex( char cIn, TCHAR& cHigh, TCHAR& cLow )
 	CharForShow(cLow);
 }
 
+void Cdoc_toolsView::HexToChar( TCHAR cHigh, TCHAR cLow, char& cOut )
+{
+	CharClearShow(cHigh);
+	CharClearShow(cLow);
+	cOut = 0xFF & (((cHigh<<4)&0xF0) | (cLow&0x0F));
+}
 
 
 BOOL Cdoc_toolsView::Data2HexString( const DE_Buffer& buf, CString& cstrOut )
@@ -220,6 +226,26 @@ BOOL Cdoc_toolsView::Data2HexString( const DE_Buffer& buf, CString& cstrOut )
 	}
 	cstrOut.ReleaseBuffer(3*buf.GetSize());
 
+	return TRUE;
+}
+
+BOOL Cdoc_toolsView::HexString2Data( const CString& cstrIn, DE_Buffer& buf, TCHAR pSpace )
+{
+	CString cstrTemp;
+	cstrTemp = cstrIn;
+
+	cstrTemp.MakeUpper();
+	cstrTemp.Remove(pSpace);
+	char * p = buf.NewBuffer((cstrTemp.GetLength()+1)/2);
+	LPCTSTR pWork = cstrTemp;
+
+	TCHAR cH,cL;
+	for (DWORD i = 0; i < buf.GetSize(); ++i)
+	{
+		cH = *pWork++;
+		cL = *pWork++;
+		HexToChar(cH,cL, *p++);
+	}
 	return TRUE;
 }
 
@@ -263,7 +289,40 @@ void Cdoc_toolsView::PosChange( DE_Pos dpSrc, IN OUT DE_Pos& dpDst )
 
 }
 
-BOOL Cdoc_toolsView::SearchBuffer( const char * pMark, const DWORD nSize, DWORD nStart, DWORD& nF, BOOL bSel /*= TRUE*/ )
+void Cdoc_toolsView::LengthChange( int& l, DE_Pos::DE_POS_TYPE typeIn, DE_Pos::DE_POS_TYPE typeOut /*= DE_Pos::POS_BUFF*/ )
+{
+	if (typeIn == typeOut)
+	{
+		return ;
+	}
+	int nTemp;
+	switch (typeIn)
+	{
+	case DE_Pos::POS_BUFF:
+		nTemp = l;
+		break;
+	case DE_Pos::POS_HEX:
+		nTemp = l/3;
+		break;
+	default:
+		break;
+	}
+
+
+	switch(typeOut)
+	{
+	case DE_Pos::POS_BUFF:
+		l = nTemp;
+		break;
+	case DE_Pos::POS_HEX:
+		l = nTemp*3;
+		break;
+	default:
+		break;
+	}
+}
+
+BOOL Cdoc_toolsView::SearchBuffer( const char * pMark, const DWORD nSize, int nStart, int& nF, BOOL bSel /*= TRUE*/ )
 {
 	char * pSrc =  m_bufferOriginal.GetBuffer();
 	DWORD nTotal = m_bufferOriginal.GetSize();
@@ -276,12 +335,12 @@ BOOL Cdoc_toolsView::SearchBuffer( const char * pMark, const DWORD nSize, DWORD 
 		return FALSE;
 	}
 
-	if (nStart + nSize > nTotal)
+	if (nStart<0 || nStart + nSize > nTotal)
 	{
 		nStart = 0;
 	}
 
-	for (DWORD pos = 0,check = 0,next_pos = 0; pos < nTotal; )
+	for (DWORD pos = nStart,check = 0,next_pos = 0; pos < nTotal; )
 	{
 		// no enough bytes left...
 		if (pos + nSize > nTotal)
@@ -349,5 +408,19 @@ void Cdoc_toolsView::SetEditCulSel( const DE_Pos& dp )
 	DE_Pos dpText;
 	dpText.nType = DE_Pos::POS_HEX;
 	PosChange(dp,dpText);
-	m_edit.SetSel((int)dp.nF, (int)dp.nB, TRUE);
+	m_edit.SetSel((int)dpText.nF, (int)dpText.nB, TRUE);
+}
+
+void Cdoc_toolsView::GetCulSel( int* nF, int* nB )
+{
+	int nf,nb;
+	m_edit.GetSel(nf,nb);
+	if (nF != NULL)
+	{
+		*nF = nf;
+	}
+	if (nB != NULL)
+	{
+		*nB = nb;
+	}
 }

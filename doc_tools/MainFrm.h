@@ -75,6 +75,8 @@ protected:
 	afx_msg void OnFilePrint();
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnUpdateFilePrintPreview(CCmdUI* pCmdUI);
+
+	afx_msg void OnID_TOOLS_OPTIONS();
 	DECLARE_MESSAGE_MAP()
 
 	void InitializeRibbon();

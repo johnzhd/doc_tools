@@ -11,10 +11,6 @@ DE_File::~DE_File(void)
 
 BOOL DE_File::GetFileData( LPCTSTR pFileName, DE_Buffer& bufOut )
 {
-	if (bufOut.GetBuffer() != NULL)
-	{
-		return FALSE;
-	}
 	HANDLE hF = CreateFile(pFileName,GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_EXISTING,NULL,NULL);
 	if (hF == INVALID_HANDLE_VALUE)
 	{

@@ -5,6 +5,7 @@
 #include "doc_tools.h"
 #include "MyDlg_Search.h"
 
+#include "MainFrm.h"
 #include "doc_toolsView.h"
 
 
@@ -99,38 +100,80 @@ void MyDlg_Search::OnBnClickedButton1()
 	// TODO: 在此添加控件通知处理程序代码
 
 	char * pMark;
-	DWORD nSize,nStart,nF;
+	DWORD nSize;
+	int nStart,nF;
 	//...
+	CString cstrTemp;
+	DE_Buffer buff;
 
-	
+	GetDlgItemText(IDC_EDIT1,cstrTemp);
+	if (FALSE == MAIN_VIEW->HexString2Data(cstrTemp,buff))
+	{
+	}
+
+
+	pMark = buff.GetBuffer();
+	nSize = buff.GetSize();
+	MAIN_VIEW->GetCulSel(NULL,&nStart);
+	if (nStart < 0)
+	{
+		nStart = 0;
+	}
+	MAIN_VIEW->LengthChange(nStart,DE_Pos::POS_HEX);
 
 	MAIN_VIEW->SearchBuffer(pMark,nSize,nStart,nF,TRUE);
-
-	pMark;//free
 }
 
 void MyDlg_Search::OnBnClickedButton2()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	char * pMark;
-	DWORD nSize,nStart,nF;
+	DWORD nSize;
+	int nStart,nF;
 	//...
+	CString cstrTemp;
+	DE_Buffer buff;
+	GetDlgItemText(IDC_EDIT2,cstrTemp);
+	
 
+	pMark = buff.NewBuffer(cstrTemp.GetLength()*sizeof(TCHAR));
 
+	memcpy(pMark,cstrTemp,cstrTemp.GetLength()*sizeof(TCHAR));
+
+	nSize = buff.GetSize();
+	MAIN_VIEW->GetCulSel(NULL,&nStart);
+	if (nStart < 0)
+	{
+		nStart = 0;
+	}
 
 	MAIN_VIEW->SearchBuffer(pMark,nSize,nStart,nF,TRUE);
-	pMark;//free
 }
 
 void MyDlg_Search::OnBnClickedButton3()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	char * pMark;
-	DWORD nSize,nStart,nF;
+	DWORD nSize;
+	int nStart,nF;
 	//...
+	CString cstrTemp;
+	DE_Buffer buff;
+	GetDlgItemText(IDC_EDIT3,cstrTemp);
+	
+	DWORD n = _ttoi(cstrTemp);
+
+	pMark = buff.NewBuffer(sizeof(DWORD));
+	memcpy(pMark,&n,sizeof(DWORD));
 
 
+	pMark = buff.GetBuffer();
+	nSize = buff.GetSize();
+	MAIN_VIEW->GetCulSel(NULL,&nStart);
+	if (nStart < 0)
+	{
+		nStart = 0;
+	}
 
 	MAIN_VIEW->SearchBuffer(pMark,nSize,nStart,nF,TRUE);
-	pMark;//free
 }
