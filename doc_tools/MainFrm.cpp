@@ -526,4 +526,11 @@ void CMainFrame::SetCaptionBarText( const CString& cstrText )
 
 void CMainFrame::OnID_TOOLS_OPTIONS()
 {
+	if (m_cstrOpenFileName.IsEmpty())
+	{
+		OnFileOpen();
+		return ;
+	}
+
+	//
 }
